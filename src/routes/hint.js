@@ -16,10 +16,51 @@ router.get("/:id", async ({ params: { id } }, res) => {
   return res.send({ type: "success", data: hint });
 });
 
-router.post("/", (req, res) => {});
 
-router.put("/:id", (req, res) => {});
+router.post("/", async ({ body: { name,content, isVisible } }, res) => {
+  if (!name || !content || !isVisible) {
+    return res.send({ type: "error", msg: "Field uncompleted" });
+  }
+  if (typeof name !== "string" || typeof content !== NULL || typeof isVisible !== "boolean") {
+    return res.send({ type: "error", msg: "Wrong format" });
+  }
+  try {
+    let hint = await Hint.create({ name, content, isVisible });
+    return res.send({ type: "success", data: hint });
+  } catch {
+    return res.send({ type: "error", msg: "Error" });
+  }
+});
 
-router.delete("/:id", (req, res) => {});
+
+router.put("/:id", async ({ params: { id }, body:{ name, content, isVisible } }, res) => {
+  if (!name || !content || !isVisible ){
+    return res.send({ type: "error", msg: "Empty Field" });
+  } 
+  if(typeof name !== "string" ){
+    return res.send({type:"error", msg: "Not a string"});
+  }
+  if(typeof content !== "string" ) {
+    return res.send({type:"error", msg: "Not a string"});
+  }
+  if(typeof isVisible !== "boolean" ){
+    return res.send({type:"error", msg: "Not a boolean"});
+  }
+    let hint = await Hint.update({ name, isVisible}, { where:{ id } } );
+    if(!hint[0]){
+      return res.send ({type:"error", msg:"Hint cannot be updated, not available yet"});
+    }
+      return res.send({type: "success",  msg:"Hint updated" })
+  
+
+});
+
+router.delete("/:id", async ({ params: { id } }, res) => {
+  let hint = await hint.destroy({where: { id}})
+if (!hint){
+  return res.send ({type:"error", msg:"Hint does not exist yet"});
+}
+  return res.send({type:"success", msg: "Hint deleted"});
+});
 
 module.exports = router;
