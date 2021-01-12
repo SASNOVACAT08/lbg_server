@@ -17,31 +17,30 @@ router.get("/:id", async ({ params: { id } }, res) => {
 });
 
 
-router.post("/", async ({ body: { name, content, isVisible, gameId }, user:{ id } }, res) => {
-  if (!name || !content || !isVisible || !gameId ) {
-    return res.send({ type: "error", msg: "Field uncompleted" });
+router.post("/", async ({body:{name, content, isVisible, gameId}, user:{ id }}, res) =>{
+  if(!name||!content||!isVisible || !gameId){
+    return res.send({type: "error", msg: "Field uncompleted"});
   }
-  if (typeof name !== "string") {
-    return res.send({ type: "error", msg: "Wrong format" });
+  if(typeof name !== "string"){
+    return res.send({ type: "error", msg: "Not a string"});
   }
-  if(typeof isVisible !== "boolean") {
-    return res.send({ type: "error", msg: "isVisible is not in boolean format" })
+  if(typeof content !== "string"){
+    return res.send({ type: "error", msg: "Not a string"});
   }
-  if( typeof content == "undefined"){
-    return res.send({ type: "error", msg: "[content] problem" })
+  if(typeof isVisible !== "boolean"){
+    return res.send({ type: "error", msg: "Not a boolean"});
   }
   if(typeof gameId !== "number"){
-    return res.send({ type: "error", msg: "NaN" });
+    return res.send({ type: "error", msg: "NaN"});
   }
-  try {
-    console.log(gameId);
-    let hint = await Hint.create({ name, content, isVisible, game_id: gameId, user_id: id });
-    return res.send({ type: "success", data: hint });
-  } catch(e) {
-    console.log(e);
-    return res.send({ type: "error", msg: "Error" });
+  try{
+    let hint = await Hint.create({name, content, isVisible, gameId: game_id, user_id:id});
+    return res.send({type:"success", data:hint});
+  } catch{
+    return res.send({type:"error", msg:"Cannot post the hint"})
   }
-});
+})
+
 
 
 router.put("/:id", async ({ params: { id }, body:{ name, content, isVisible } }, res) => {

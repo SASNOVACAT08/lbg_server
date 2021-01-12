@@ -17,20 +17,33 @@ router.get("/:id", async ({ params: { id } }, res) => {
 });
 
 
-router.post("/", async ({ body: { name, link, isVisible } }, res) => {
-  if (!name || !link || !isVisible) {
+
+router.post("/", async ({ body: { name, link, isVisible, gameId }, user:{ id } }, res) => {
+  if (!name || !link || !isVisible || !gameId ) {
     return res.send({ type: "error", msg: "Field uncompleted" });
   }
-  if (typeof name !== "string" || typeof link !== "string"|| typeof isVisible !== "boolean") {
+  if (typeof name !== "string") {
     return res.send({ type: "error", msg: "Wrong format" });
   }
+  if( typeof link !== "string"){
+    return res.send({ type: "error", msg: "[content] problem" })
+  }
+  if(typeof isVisible !== "boolean") {
+    return res.send({ type: "error", msg: "isVisible is not in boolean format" })
+  }
+  if(typeof gameId !== "number"){
+    return res.send({ type: "error", msg: "NaN" });
+  }
   try {
-    let hint = await Hint.create({ name, link, isVisible });
-    return res.send({ type: "success", data: hint });
-  } catch {
+   // console.log(userId);
+    let sliderHint = await SliderHint.create({ name, link, isVisible,  game_id: gameId, user_id: id });
+    return res.send({ type: "success", data: sliderHint });
+  } catch(e) {
+    console.log(e);
     return res.send({ type: "error", msg: "Error" });
   }
 });
+
 
 
 

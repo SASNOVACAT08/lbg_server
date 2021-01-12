@@ -39,7 +39,6 @@ router.post("/", async ({ body: { name, timestamp, isValid, isVisible, gameId },
   }
   try {
     let event = await Event.create({ name, timestamp, isValid, isVisible, game_id: gameId, user_id: id });
-
     return res.send({ type: "success", data: event });
   } catch  {
     return res.send({ type: "error", msg: "Error" });
@@ -73,11 +72,10 @@ router.put("/:id", async ({ params: { id }, body:{ name, timestamp, isValid, isV
 });
 
 router.delete("/:id", async ({ params: { id } }, res) => {
-  let event = await event.destroy({where: { id }})
+  let event = await Event.destroy({where: { id}})
 if (!event){
   return res.send ({type:"error", msg:"Event does not exist yet"});
 }
   return res.send({type:"success", msg: "Event deleted"});
 });
-
 module.exports = router;
