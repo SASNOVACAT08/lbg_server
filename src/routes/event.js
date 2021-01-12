@@ -17,24 +17,38 @@ router.get("/:id", async ({ params: { id } }, res) => {
 });
 
 
-router.post("/", async ({ body: { name,timestamp, isVisible, isValid } }, res) => {
-  if (!name || !isVisible || !isValid) {
+router.post("/", async ({ body: { name, timestamp, isValid, isVisible, gameId }, user:{ id } }, res) => {
+  
+  if (!name || !timestamp || !isValid || !isVisible || !gameId  ) {
     return res.send({ type: "error", msg: "Field uncompleted" });
   }
-  if (typeof name !== "string" || typeof timestamp !=="Date" || typeof isVisible !== "boolean" || typeof isValid !=="boolean") {
-    return res.send({ type: "error", msg: "Wrong format" });
+  if (typeof name !== "string") {
+    return res.send({ type: "error", msg: "Name is in the Wrong format" });
+  }
+  if (typeof timestamp !== "string" ){
+    return res.send({ type:"error", msg: "Date isn't in string format"});
+  }
+  if(typeof isValid !== "boolean"){
+    return res.send({ type: "error", msg: "Not boolean" });
+  }
+  if(typeof isVisible !== "boolean"){
+    return res.send({ type: "error", msg: "Not boolean" });
+  }
+  if(typeof gameId !== "number"){
+    return res.send({ type: "error", msg: "NaN" });
   }
   try {
-    let event = await Event.create({ timestamp:Date.now, name, isVisible });
+    let event = await Event.create({ name, timestamp, isValid, isVisible, game_id: gameId, user_id: id });
+
     return res.send({ type: "success", data: event });
-  } catch {
+  } catch  {
     return res.send({ type: "error", msg: "Error" });
   }
 });
 
 
 router.put("/:id", async ({ params: { id }, body:{ name, timestamp, isValid, isVisible } }, res) => {
-  if (!name || !timestamp || !isValid || !isVisible  ){
+  if (!name || !timestamp || !isValid || !isVisible){
     return res.send({ type: "error", msg: "Empty Field" });
   } 
   if(typeof name !== "string" ){
@@ -42,6 +56,9 @@ router.put("/:id", async ({ params: { id }, body:{ name, timestamp, isValid, isV
   }
   if(typeof isVisible !== "boolean" ){
     return res.send({type:"error", msg: "isVisible is not a boolean"});
+  }
+  if(typeof timestamp !== "string"){
+    return res.send({type:"error", msg: "This date is not in a string format"});
   }
   if(typeof isValid !== "boolean" ){
     return res.send({type:"error", msg: " isValid is not a boolean"});

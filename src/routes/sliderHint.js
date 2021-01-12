@@ -39,15 +39,15 @@ router.put("/:id", async ({ params: { id }, body:{ name, link, isVisible } }, re
     return res.send({ type: "error", msg: "Empty Field" });
   } 
   if(typeof name !== "string" ){
-    return res.send({type:"error", msg: "Not a string"});
+    return res.send({type:"error", msg: "The name is not a string"});
   }
   if(typeof link !== string ) {
-    return res.send({type:"error", msg: "Not a string"});
+    return res.send({type:"error", msg: "The link is not a string"});
   }
   if(typeof isVisible !== "boolean" ){
     return res.send({type:"error", msg: "Not a boolean"});
   }
-    let hint = await Hint.update({ name, isVisible}, { where:{ id } } );
+    let hint = await Hint.update({ name, link, isVisible}, { where:{ id } } );
     if(!hint[0]){
       return res.send ({type:"error", msg:"Hint cannot be updated, not available yet"});
     }
