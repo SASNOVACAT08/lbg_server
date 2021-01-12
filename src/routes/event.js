@@ -73,7 +73,7 @@ router.put("/:id", async ({ params: { id }, body:{ name, timestamp, isValid, isV
 });
 
 router.delete("/:id", async ({ params: { id } }, res) => {
-  let event = await event.destroy({where: { id}})
+  let event = await event.destroy({where: { id }})
 if (!event){
   return res.send ({type:"error", msg:"Event does not exist yet"});
 }

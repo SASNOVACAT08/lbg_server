@@ -34,6 +34,7 @@ router.post("/", async ({ body: { name, content, isVisible, gameId }, user:{ id 
     return res.send({ type: "error", msg: "NaN" });
   }
   try {
+    console.log(gameId);
     let hint = await Hint.create({ name, content, isVisible, game_id: gameId, user_id: id });
     return res.send({ type: "success", data: hint });
   } catch(e) {
@@ -66,11 +67,12 @@ router.put("/:id", async ({ params: { id }, body:{ name, content, isVisible } },
 });
 
 router.delete("/:id", async ({ params: { id } }, res) => {
-  let hint = await hint.destroy({where: { id}})
+  let hint = await Hint.destroy({where: { id}})
 if (!hint){
   return res.send ({type:"error", msg:"Hint does not exist yet"});
 }
   return res.send({type:"success", msg: "Hint deleted"});
 });
+
 
 module.exports = router;

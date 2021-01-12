@@ -23,6 +23,7 @@ User.hasMany(Event, {
 Game.hasMany(Event, {
   foreignKey: {
     name: "game_id",
+
     allowNull: false,
   },
 });
