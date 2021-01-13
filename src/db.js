@@ -19,16 +19,33 @@ User.hasMany(Event, {
     allowNull: false,
   },
 });
+Event.belongsTo(User, {
+  foreignKey: {
+    name: "user_id",
+    allowNull: false,
+  },
+});
 
 Game.hasMany(Event, {
   foreignKey: {
     name: "game_id",
-
+    allowNull: false,
+  },
+});
+Event.belongsTo(Game, {
+  foreignKey: {
+    name: "game_id",
     allowNull: false,
   },
 });
 
 Game.hasMany(Hint, {
+  foreignKey: {
+    name: "game_id",
+    allowNull: false,
+  },
+});
+Hint.belongsTo(Game, {
   foreignKey: {
     name: "game_id",
     allowNull: false,
@@ -41,8 +58,20 @@ Event.hasMany(Hint, {
     allowNull: true,
   },
 });
+Hint.belongsTo(Event, {
+  foreignKey: {
+    name: "event_id",
+    allowNull: true,
+  },
+});
 
 User.hasMany(Hint, {
+  foreignKey: {
+    name: "user_id",
+    allowNull: false,
+  },
+});
+Hint.belongsTo(User, {
   foreignKey: {
     name: "user_id",
     allowNull: false,
@@ -55,6 +84,12 @@ Event.hasMany(SliderHint, {
     allowNull: true,
   },
 });
+SliderHint.belongsTo(Event, {
+  foreignKey: {
+    name: "event_id",
+    allowNull: true,
+  },
+});
 
 User.hasMany(SliderHint, {
   foreignKey: {
@@ -62,8 +97,20 @@ User.hasMany(SliderHint, {
     allowNull: false,
   },
 });
+SliderHint.belongsTo(User, {
+  foreignKey: {
+    name: "user_id",
+    allowNull: false,
+  },
+});
 
 Game.hasMany(SliderHint, {
+  foreignKey: {
+    name: "game_id",
+    allowNull: false,
+  },
+});
+SliderHint.belongsTo(Game, {
   foreignKey: {
     name: "game_id",
     allowNull: false,

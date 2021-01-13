@@ -16,65 +16,74 @@ router.get("/:id", async ({ params: { id } }, res) => {
   return res.send({ type: "success", data: sliderHint });
 });
 
-
-
-router.post("/", async ({ body: { name, link, isVisible, gameId }, user:{ id } }, res) => {
-  if (!name || !link || !isVisible || !gameId ) {
-    return res.send({ type: "error", msg: "Field uncompleted" });
-  }
-  if (typeof name !== "string") {
-    return res.send({ type: "error", msg: "Wrong format" });
-  }
-  if( typeof link !== "string"){
-    return res.send({ type: "error", msg: "[content] problem" })
-  }
-  if(typeof isVisible !== "boolean") {
-    return res.send({ type: "error", msg: "isVisible is not in boolean format" })
-  }
-  if(typeof gameId !== "number"){
-    return res.send({ type: "error", msg: "NaN" });
-  }
-  try {
-   // console.log(userId);
-    let sliderHint = await SliderHint.create({ name, link, isVisible,  game_id: gameId, user_id: id });
-    return res.send({ type: "success", data: sliderHint });
-  } catch(e) {
-    console.log(e);
-    return res.send({ type: "error", msg: "Error" });
-  }
-});
-
-
-
-
-router.put("/:id", async ({ params: { id }, body:{ name, link, isVisible } }, res) => {
-  if (!name || !link || !isVisible ){
-    return res.send({ type: "error", msg: "Empty Field" });
-  } 
-  if(typeof name !== "string" ){
-    return res.send({type:"error", msg: "The name is not a string"});
-  }
-  if(typeof link !== string ) {
-    return res.send({type:"error", msg: "The link is not a string"});
-  }
-  if(typeof isVisible !== "boolean" ){
-    return res.send({type:"error", msg: "Not a boolean"});
-  }
-    let hint = await Hint.update({ name, link, isVisible}, { where:{ id } } );
-    if(!hint[0]){
-      return res.send ({type:"error", msg:"Hint cannot be updated, not available yet"});
+router.post(
+  "/",
+  async ({ body: { name, link, isVisible, gameId }, user: { id } }, res) => {
+    if (!name || !link || !gameId) {
+      return res.send({ type: "error", msg: "Field uncompleted" });
     }
-      return res.send({type: "success",  msg:"Hint updated" })
-  
+    if (typeof name !== "string") {
+      return res.send({ type: "error", msg: "Wrong format" });
+    }
+    if (typeof link !== "string") {
+      return res.send({ type: "error", msg: "[content] problem" });
+    }
+    if (typeof isVisible !== "boolean") {
+      return res.send({
+        type: "error",
+        msg: "isVisible is not in boolean format",
+      });
+    }
+    if (typeof gameId !== "number") {
+      return res.send({ type: "error", msg: "NaN" });
+    }
+    try {
+      let sliderHint = await SliderHint.create({
+        name,
+        link,
+        isVisible,
+        game_id: gameId,
+        user_id: id,
+      });
+      return res.send({ type: "success", data: sliderHint });
+    } catch {
+      return res.send({ type: "error", msg: "Error" });
+    }
+  }
+);
 
-});
+router.put(
+  "/:id",
+  async ({ params: { id }, body: { name, link, isVisible } }, res) => {
+    if (!name || !link) {
+      return res.send({ type: "error", msg: "Empty Field" });
+    }
+    if (typeof name !== "string") {
+      return res.send({ type: "error", msg: "The name is not a string" });
+    }
+    if (typeof link !== string) {
+      return res.send({ type: "error", msg: "The link is not a string" });
+    }
+    if (typeof isVisible !== "boolean") {
+      return res.send({ type: "error", msg: "Not a boolean" });
+    }
+    let hint = await Hint.update({ name, link, isVisible }, { where: { id } });
+    if (!hint[0]) {
+      return res.send({
+        type: "error",
+        msg: "Hint cannot be updated, not available yet",
+      });
+    }
+    return res.send({ type: "success", msg: "Hint updated" });
+  }
+);
 
 router.delete("/:id", async ({ params: { id } }, res) => {
-  let sliderHint = await SliderHint.destroy({where: { id}})
-if (!sliderHint){
-  return res.send ({type:"error", msg:"SliderHint does not exist yet"});
-}
-  return res.send({type:"success", msg: "SliderHint deleted"});
+  let sliderHint = await SliderHint.destroy({ where: { id } });
+  if (!sliderHint) {
+    return res.send({ type: "error", msg: "SliderHint does not exist yet" });
+  }
+  return res.send({ type: "success", msg: "SliderHint deleted" });
 });
 
 module.exports = router;
