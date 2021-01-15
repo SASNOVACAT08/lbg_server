@@ -12,6 +12,7 @@ const {
 } = require("../services/auth");
 
 router.post("/login", async ({ body: { email, password } }, res) => {
+  console.log(email, password);
   if (!email || !password) {
     return res.send({ type: "error", msg: "Field uncompleted" });
   }

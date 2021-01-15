@@ -21,6 +21,7 @@ router.post("/", async ({ body: { name, isVisible } }, res) => {
     return res.send({ type: "error", msg: "Field uncompleted" });
   }
   if (typeof name !== "string" || typeof isVisible !== "boolean") {
+    console.log(typeof isVisible);
     return res.send({ type: "error", msg: "Wrong format" });
   }
   try {
