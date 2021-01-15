@@ -12,6 +12,7 @@ const Game = require("./models/Game")(sequelize);
 const Hint = require("./models/Hint")(sequelize);
 const SliderHint = require("./models/SliderHint")(sequelize);
 const User = require("./models/User")(sequelize);
+const Timer = require("./models/Timer")(sequelize);
 
 User.hasMany(Event, {
   foreignKey: {
@@ -125,4 +126,5 @@ module.exports = {
   SliderHint,
   Event,
   User,
+  Timer,
 };

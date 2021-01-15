@@ -15,4 +15,9 @@ const isAuth = (req, res, next) => {
   });
 };
 
-module.exports = isAuth;
+const isAuthSock = (socket, data, cb) => {
+  console.log(socket);
+  next();
+};
+
+module.exports = { isAuth, isAuthSock };
